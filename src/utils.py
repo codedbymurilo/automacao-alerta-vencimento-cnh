@@ -46,3 +46,40 @@ def formatar_tabela_para_terminal(df):
 def obter_timestamp_legivel():
     """Retorna timestamp no formato legível."""
     return datetime.now().strftime('%d/%m/%Y %H:%M:%S')
+
+
+def limpar_relatorios_antigos(pasta_relatorios, manter=10):
+    """
+    Remove relatórios antigos, mantendo apenas os N mais recentes.
+
+    Args:
+        pasta_relatorios (str): Caminho da pasta com relatórios
+        manter (int): Quantidade de relatórios a manter (padrão 10)
+    """
+    if not pasta_relatorios or not os.path.exists(pasta_relatorios):
+        return
+
+    # Listar todos os arquivos .xlsx
+    arquivos = [
+        os.path.join(pasta_relatorios, f)
+        for f in os.listdir(pasta_relatorios)
+        if f.endswith('.xlsx')
+    ]
+
+    if len(arquivos) <= manter:
+        return
+
+    # Ordenar por data de modificação (mais antigos primeiro)
+    arquivos.sort(key=os.path.getmtime)
+
+    # Deletar os mais antigos
+    deletados = 0
+    for arquivo in arquivos[:-manter]:
+        try:
+            os.remove(arquivo)
+            deletados += 1
+        except Exception as e:
+            print(f"⚠️  Erro ao deletar {os.path.basename(arquivo)}: {e}")
+
+    if deletados > 0:
+        print(f"🧹 Limpeza: {deletados} relatório(s) antigo(s) deletado(s)")

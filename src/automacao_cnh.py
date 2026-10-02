@@ -15,6 +15,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
 from email.utils import formatdate
+from email import encoders
 from pathlib import Path
 
 from config import Config
@@ -24,6 +25,7 @@ from utils import (
     gerar_nome_relatorio,
     validar_arquivo_existe,
     obter_timestamp_legivel,
+    limpar_relatorios_antigos,
 )
 
 
@@ -202,9 +204,10 @@ class AutomacaoCNH:
         with open(arquivo_planilha, 'rb') as attachment:
             part = MIMEBase('application', 'octet-stream')
             part.set_payload(attachment.read())
+            encoders.encode_base64(part)
             part.add_header(
                 'Content-Disposition',
-                f'attachment; filename= {os.path.basename(arquivo_planilha)}'
+                f'attachment; filename={os.path.basename(arquivo_planilha)}'
             )
             msg.attach(part)
 
@@ -238,6 +241,7 @@ class AutomacaoCNH:
         else:
             print(f"✅ Nenhuma CNH vencendo nos próximos {self.config.DIAS_ALERTA} dias!")
 
+        limpar_relatorios_antigos(self.config.PASTA_RELATORIOS, manter=10)
         print(f"\n{'='*60}\n")
 
     def agendar_execucao_diaria(self):

@@ -239,6 +239,9 @@ Veja [CONFIGURAR_EMAIL.md](docs/CONFIGURAR_EMAIL.md) para mais detalhes.
 
 # Executar manualmente
 python run.py
+
+# Executar teste rapido
+python tests\agendar_rapido.py 10
 ```
 
 Você deve ver:
@@ -299,55 +302,6 @@ schtasks /query /tn AutomacaoCNH /v
 
 # Forçar execução agora
 schtasks /run /tn AutomacaoCNH
-```
-
----
-
-## 🐛 Troubleshooting
-
-### ❌ "Arquivo não encontrado"
-
-```
-❌ Arquivo cnhs.xlsx não encontrado!
-```
-
-**Solução:**
-1. Verifique se `ARQUIVO_CNH` no `.env` está correto
-2. Confirme que o arquivo existe: `Test-Path cnhs.xlsx`
-3. Teste o caminho completo
-
-### ❌ "Erro de autenticação no email"
-
-```
-❌ Erro de autenticação. Verifique email e senha no .env
-```
-
-**Solução:**
-- **Gmail:** Use App Password (16 caracteres), não senha normal
-- **Outlook:** Use senha normal do email
-- **Corporativo:** Peça ao TI as credenciais corretas
-- Verifique se ativou 2FA (Gmail)
-
-### ❌ "Permissão negada"
-
-```
-❌ Erro ao salvar: Permission denied
-```
-
-**Solução:**
-1. Verifique permissões de escrita na `PASTA_RELATORIOS`
-2. Teste criar arquivo manualmente na pasta
-3. Execute como Administrador se necessário
-
-### ❌ "Dependências não encontradas"
-
-```
-ModuleNotFoundError: No module named 'pandas'
-```
-
-**Solução:**
-```bash
-pip install -r requirements.txt --upgrade
 ```
 
 ---
@@ -457,34 +411,6 @@ python run.py
 
 ---
 
-## 📝 Logs e Debugging
-
-Execute com saída detalhada:
-
-```bash
-# Ver todas as mensagens
-python run.py 2>&1 | Tee-Object -FilePath logs.txt
-
-# Salvar em arquivo
-python run.py > logs.txt 2>&1
-```
-
-Para debug no código:
-
-```python
-from src.automacao_cnh import AutomacaoCNH
-from src.config import Config
-
-# Ver configurações
-Config.exibir()
-
-# Teste individual
-automacao = AutomacaoCNH()
-df = automacao.ler_arquivo_cnh()
-```
-
----
-
 ## 🤝 Contribuindo
 
 Para melhorias ou correções:
@@ -501,42 +427,9 @@ MIT License - Veja detalhes em LICENSE
 
 ---
 
-## ❓ Dúvidas Frequentes
-
-**P: Como alterar o horário de execução?**  
-R: Edite `HORARIO_EXECUCAO` no `.env` (formato HH:MM, ex: 14:30)
-
-**P: Posso usar outro servidor de email?**  
-R: Sim! Configure `SMTP_SERVER` e `SMTP_PORT` no `.env`
-
-**P: O arquivo Excel pode estar em servidor de rede?**  
-R: Sim! Use caminho UNC: `\\servidor\compartilhamento\cnhs.xlsx`
-
-**P: Como modificar para alertar 14 dias antes?**  
-R: Mude `DIAS_ALERTA=14` no `.env`
-
-**P: Posso enviar para múltiplos emails?**  
-R: Edite `EMAIL_DESTINATARIO` com múltiplos emails separados por vírgula (requer ajuste no código)
-
----
-
-## 📞 Suporte
-
-Dúvidas ou problemas?
-
-1. Consulte a documentação em `docs/`
-2. Execute `python run.py` e veja as mensagens de erro
-3. Teste manualmente cada componente
-4. Verifique o arquivo `.env` está correto
-
----
-
 ## 🎉 Versão
 
 - **Versão:** 1.0.0
 - **Última atualização:** Outubro 2026
 - **Status:** ✅ Produção
 
----
-
-**Desenvolvido com ❤️ para automação de controle de frotas**
