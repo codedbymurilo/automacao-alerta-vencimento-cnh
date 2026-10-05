@@ -65,7 +65,8 @@ projeto/
 
 ```bash
 # Clonar ou baixar o projeto
-cd c:\Fontes\projetos\api-simples
+git clone https://github.com/codedbymurilo/automacao-alerta-vencimento-cnh.git
+cd .\automacao-alerta-vencimento-cnh\
 
 # Criar virtualenv (recomendado)
 python -m venv .venv
@@ -101,6 +102,12 @@ python scripts\criar_excel_exemplo.py
 
 # Copiar para o mesmo diretório do projeto
 copy example\cnhs_exemplo.xlsx cnhs.xlsx
+
+# Executar teste rapido (terminal)
+python tests\teste_rapido.py
+
+# Executar agendamento rapido (10 segundos)
+python tests\agendar_rapido.py 10
 
 # Executar automação
 python run.py
