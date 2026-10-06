@@ -147,7 +147,7 @@ class AutomacaoCNH:
             bool: True se email enviado com sucesso, False caso contrário
         """
         try:
-            msg = MIMEMultipart('alternative')
+            msg = MIMEMultipart('mixed')
             msg['Subject'] = f"🚨 Relatório de CNHs Vencendo - {datetime.now().strftime('%d/%m/%Y')}"
             msg['From'] = self.config.EMAIL_SENDER
             msg['To'] = self.config.EMAIL_DESTINATARIO
